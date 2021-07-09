@@ -181,5 +181,8 @@ sahie_2019 %>%
   count(county_name, sort = TRUE) %>%
   top_n(10)
 
-write_rds(sahie_2019, "data/tidy/sahie_2019.rds")
+# remove " County" from the county names for plotting 
+sahie_2019 <- sahie_2019 %>%
+  mutate(county_name = str_remove(sahie_2019$county_name, pattern = " County"))
 
+write_rds(sahie_2019, "data/tidy/sahie_2019.rds")
