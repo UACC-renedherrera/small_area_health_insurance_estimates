@@ -54,3 +54,18 @@ write_sf(
   obj = sahie_2019_az_spatial,
   dsn = "data/spatial/sahie_2019_az_spatial/sahie_2019_az_spatial.shp"
 )
+
+# because there is no race data available at the county level this does not display any information
+# # comparing insurance rates grouped by race and catchment
+# sahie_2019_az %>%
+#   group_by(uazcc_catchment, racecat_labels) %>%
+#   filter(countyfips != "000",
+#          agecat == "0",
+#          sexcat == "0",
+#          iprcat == "0") %>%
+#   summarise(nui = sum(nui),
+#             nipr = sum(nipr)) %>%
+#   mutate(pctui = 100*(nui/nipr)) %>%
+#   ggplot() +
+#   geom_bar(mapping = aes(x = racecat_labels, y = pctui, fill = uazcc_catchment), position = "dodge", stat = "identity") +
+#   coord_flip()
