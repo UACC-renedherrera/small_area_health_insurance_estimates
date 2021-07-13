@@ -25,12 +25,347 @@ uazcc_catchment_counties <- c(
   "Yuma"
 )
 
-# read data
+# read data for az
 sahie_2019_az <- read_rds("data/tidy/sahie_2019_az.rds")
+
+# get values for az
+# percent uninsured in AZ ####
+# for all the state
+sahie_2019_az %>%
+  filter(geocat == "40",
+         agecat == "0",
+         racecat == "0",
+         sexcat == "0",
+         iprcat == "0") %>%
+  select(pctui)
+
+# az: age ####
+# grouped by agecat
+
+# az: age, race #### 
+# grouped by agecat, racecat
+
+# az: age, race, sex #### 
+# grouped by agecat, racecat, sexcat
+
+# az: age, race, income #### 
+# grouped by agecat, racecat, iprcat
+
+# az: age, race, sex, income #### 
+# grouped by agecat, racecat, sexcat, iprcat
+
+# az: age, sex #### 
+# grouped by agecat, sexcat
+
+# az: age, sex, income #### 
+# grouped by agecat, sexcat, iprcat
+
+# az: age, income #### 
+# grouped by agecat, iprcat
+
+# az: race #### 
+# grouped by racecat
+
+# az: race, sex #### 
+# grouped by racecat, sexcat
+
+# az: race, income #### 
+# grouped by racecat, iprcat
+
+# az: sex #### 
+# grouped by sexcat
+
+# az: sex, income #### 
+# grouped by sexcat, iprcat
+
+# az: income #### 
+# grouped by iprcat
+
+# az: age #### 
+# grouped by age
+sahie_2019_az %>%
+  filter(geocat == "40",
+         racecat == "0",
+         sexcat == "0",
+         iprcat == "0") %>%
+  group_by(agecat) %>%
+  select(agecat_labels, pctui) %>%
+  arrange(desc(pctui))
+
+# az: race #### 
+# grouped by race
+sahie_2019_az %>%
+  filter(geocat == "40",
+         agecat == "0",
+         sexcat == "0",
+         iprcat == "0") %>%
+  group_by(racecat) %>%
+  select(racecat_labels, pctui) %>%
+  arrange(desc(pctui))
+
+# az: sex #### 
+# grouped by sex
+sahie_2019_az %>%
+  filter(geocat == "40",
+         agecat == "0",
+         racecat == "0",
+         iprcat == "0") %>%
+  group_by(sexcat) %>%
+  select(sexcat_labels, pctui) %>%
+  arrange(desc(pctui))
+
+# az: income #### 
+# grouped by income category
+sahie_2019_az %>%
+  filter(geocat == "40",
+         agecat == "0",
+         racecat == "0",
+         sexcat == "0") %>%
+  group_by(iprcat) %>%
+  select(iprcat_labels, pctui) %>%
+  arrange(desc(pctui))
+
+# az: age, race #### 
+# grouped by age and race
+sahie_2019_az %>%
+  filter(geocat == "40",
+         sexcat == "0",
+         iprcat == "0") %>%
+  group_by(agecat, racecat) %>%
+  select(agecat_labels, racecat_labels, pctui) %>%
+  arrange(desc(pctui))
+
+# az: age, race, sex #### 
+# grouped by age and race
+sahie_2019_az %>%
+  filter(geocat == "40",
+         iprcat == "0") %>%
+  group_by(agecat, racecat, sexcat) %>%
+  select(agecat_labels, racecat_labels, sexcat_labels, pctui) %>%
+  arrange(desc(pctui))
+# az: age, sex #### 
+# grouped by age and sex
+sahie_2019_az %>%
+  filter(geocat == "40",
+         racecat == "0",
+         iprcat == "0") %>%
+  group_by(agecat, sexcat) %>%
+  select(agecat_labels, sexcat_labels, pctui) %>%
+  arrange(desc(pctui))
+
+# az: age, sex, income #### 
+# grouped by age and sex
+sahie_2019_az %>%
+  filter(geocat == "40",
+         racecat == "0") %>%
+  group_by(agecat, sexcat, iprcat) %>%
+  select(agecat_labels, sexcat_labels, iprcat_labels, pctui) %>%
+  arrange(desc(pctui))
+
+# az: age, sex, race #### 
+# grouped by age and sex
+sahie_2019_az %>%
+  filter(geocat == "40",
+         iprcat == "0") %>%
+  group_by(agecat, sexcat, racecat) %>%
+  select(agecat_labels, sexcat_labels, racecat_labels, pctui) %>%
+  arrange(desc(pctui))
+
+# az: age, sex, income #### 
+# grouped by age and sex and income
+sahie_2019_az %>%
+  filter(geocat == "40",
+         racecat == "0") %>%
+  group_by(agecat, sexcat, iprcat) %>%
+  select(agecat_labels, sexcat_labels, iprcat_labels, pctui) %>%
+  arrange(desc(pctui))
+
+# az: age, sex, income, race #### 
+# grouped by race & age and sex and income
+sahie_2019_az %>%
+  filter(geocat == "40") %>%
+  group_by(racecat, agecat, sexcat, iprcat) %>%
+  select(racecat_labels, agecat_labels, sexcat_labels, iprcat_labels, pctui) %>%
+  arrange(desc(pctui))
+
+# az: race
+# grouped by race
+sahie_2019_az %>%
+  filter(geocat == "40",
+         agecat == "0",
+         sexcat == "0",
+         iprcat == "0") %>%
+  group_by(racecat) %>%
+  select(racecat_labels, pctui) %>%
+  arrange(desc(pctui))
+
+# az: race, age
+# grouped by race
+sahie_2019_az %>%
+  filter(geocat == "40",
+         sexcat == "0",
+         iprcat == "0") %>%
+  group_by(racecat, agecat) %>%
+  select(racecat_labels, agecat_labels, pctui) %>%
+  arrange(desc(pctui))
+
+# grouped by sex
+sahie_2019_az %>%
+  filter(geocat == "40",
+         agecat == "0",
+         racecat == "0",
+         iprcat == "0") %>%
+  group_by(sexcat) %>%
+  select(sexcat_labels, pctui)
+
+# grouped by income
+sahie_2019_az %>%
+  filter(geocat == "40",
+         agecat == "0",
+         racecat == "0",
+         sexcat == "0") %>%
+  group_by(iprcat) %>%
+  select(iprcat_labels, pctui)
+
+# percent uninsured for each AZ county ####
+sahie_2019_az %>%
+  filter(geocat == "50",
+         agecat == "0",
+         racecat == "0",
+         sexcat == "0",
+         iprcat == "0") %>%
+  select(county_name, pctui)
+
+# grouped by age
+sahie_2019_az %>%
+  filter(geocat == "50",
+         racecat == "0",
+         sexcat == "0",
+         iprcat == "0") %>%
+  group_by(county_name, agecat) %>%
+  select(county_name, agecat_labels, pctui)
+
+# grouped by race redundant because there is no race data reported at the county level
+# sahie_2019_az %>%
+#   filter(geocat == "50",
+#          agecat == "0",
+#          sexcat == "0",
+#          iprcat == "0") %>%
+#   group_by(racecat) %>%
+#   select(county_name, racecat_labels, pctui)
+
+# grouped by sex
+sahie_2019_az %>%
+  filter(geocat == "50",
+         agecat == "0",
+         racecat == "0",
+         iprcat == "0") %>%
+  group_by(county_name, sexcat) %>%
+  select(county_name, sexcat_labels, pctui)
+
+# grouped by income
+sahie_2019_az %>%
+  filter(geocat == "50",
+         agecat == "0",
+         racecat == "0",
+         sexcat == "0") %>%
+  group_by(county_name, iprcat) %>%
+  select(county_name, iprcat_labels, pctui)
 
 # catchment only
 sahie_2019_az_uazcc <- read_rds("data/tidy/sahie_2019_az.rds") %>%
-  filter(uazcc_catchment == TRUE)
+  filter(uazcc_catchment == "yes")
+
+# percent uninsured in AZ ####
+# for all the state
+sahie_2019_az %>%
+  filter(geocat == "40",
+         agecat == "0",
+         racecat == "0",
+         sexcat == "0",
+         iprcat == "0") %>%
+  select(pctui)
+
+# grouped by age
+sahie_2019_az %>%
+  filter(geocat == "40",
+         racecat == "0",
+         sexcat == "0",
+         iprcat == "0") %>%
+  group_by(agecat) %>%
+  select(agecat_labels, pctui)
+
+# grouped by race
+sahie_2019_az %>%
+  filter(geocat == "40",
+         agecat == "0",
+         sexcat == "0",
+         iprcat == "0") %>%
+  group_by(racecat) %>%
+  select(racecat_labels, pctui)
+
+# grouped by sex
+sahie_2019_az %>%
+  filter(geocat == "40",
+         agecat == "0",
+         racecat == "0",
+         iprcat == "0") %>%
+  group_by(sexcat) %>%
+  select(sexcat_labels, pctui)
+
+# grouped by income
+sahie_2019_az %>%
+  filter(geocat == "40",
+         agecat == "0",
+         racecat == "0",
+         sexcat == "0") %>%
+  group_by(iprcat) %>%
+  select(iprcat_labels, pctui)
+
+# percent uninsured for each UAZCC county ####
+sahie_2019_az_uazcc %>%
+  filter(geocat == "50",
+         agecat == "0",
+         racecat == "0",
+         sexcat == "0",
+         iprcat == "0") %>%
+  select(county_name, pctui)
+
+# grouped by age
+sahie_2019_az_uazcc %>%
+  filter(geocat == "50",
+         racecat == "0",
+         sexcat == "0",
+         iprcat == "0") %>%
+  group_by(county_name, agecat) %>%
+  select(county_name, agecat_labels, pctui)
+
+# grouped by race redundant because there is no race data reported at the county level
+# sahie_2019_az %>%
+#   filter(geocat == "50",
+#          agecat == "0",
+#          sexcat == "0",
+#          iprcat == "0") %>%
+#   group_by(racecat) %>%
+#   select(county_name, racecat_labels, pctui)
+
+# grouped by sex
+sahie_2019_az_uazcc %>%
+  filter(geocat == "50",
+         agecat == "0",
+         racecat == "0",
+         iprcat == "0") %>%
+  group_by(county_name, sexcat) %>%
+  select(county_name, sexcat_labels, pctui)
+
+# grouped by income
+sahie_2019_az_uazcc %>%
+  filter(geocat == "50",
+         agecat == "0",
+         racecat == "0",
+         sexcat == "0") %>%
+  group_by(county_name, iprcat) %>%
+  select(county_name, iprcat_labels, pctui)
 
 # get az county spatial data from tigris
 az_counties <- counties(state = "04") %>%
