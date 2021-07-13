@@ -16,6 +16,15 @@ library(sf)
 # enable caching of data
 options(tigris_use_cache = TRUE)
 
+# list of catchment counties
+uazcc_catchment_counties <- c(
+  "Cochise",
+  "Pima",
+  "Pinal",
+  "Santa Cruz",
+  "Yuma"
+)
+
 # read data
 sahie_2019_az <- read_rds("data/tidy/sahie_2019_az.rds")
 
