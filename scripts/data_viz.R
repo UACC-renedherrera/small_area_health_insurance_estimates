@@ -10,7 +10,22 @@
 # load package libraries
 library(here)
 library(tidyverse)
+library(sf)
 library(ggthemes)
+library(RColorBrewer)
+
+# list of catchment counties
+uazcc_catchment_counties <- c(
+  "Cochise",
+  "Pima",
+  "Pinal",
+  "Santa Cruz",
+  "Yuma"
+)
+
+# Primary Color Palette 2
+# c("UA Red", "Arizona Blue")
+uazcc_primary_palette <- c("#0C234B", "#AB0520")
 
 # read data
 # data frame
@@ -73,10 +88,8 @@ sahie_2019_az %>%
   ) %>%
   ggplot(mapping = aes(x = reorder(county_name, pctelig), y = pctelig)) +
   geom_bar(fill = "#1E5288", stat = "identity") +
-  geom_bar(color = uazcc_catchment_counties, stat = "identity") +
   geom_errorbar(aes(ymin = (pctelig - pctelig_moe), ymax = (pctelig + pctelig_moe)), color = "#001C48") +
   coord_flip() +
-  # ylim(c(0,100)) +
   labs(
     title = "Percent Uninsured in Arizona Counties",
     subtitle = "2019, Under 65 years, All Races, Both Sexes, All Incomes",
@@ -119,7 +132,6 @@ ggsave(
   scale = 1.5
 )
 
-
 # viz 2 by age ####
 # percent uninsured for all income groups in each county
 # grouped by age group
@@ -146,6 +158,35 @@ sahie_2019_az %>%
 
 ggsave(
   filename = "data_viz/uninsured_by_county_age.svg",
+  scale = 1.5
+)
+
+# comparing insurance rates grouped by age group and catchment
+sahie_2019_az %>%
+  group_by(uazcc_catchment, agecat_labels) %>%
+  filter(geocat == "50",
+         racecat == "0",
+         sexcat == "0",
+         iprcat == "0") %>%
+  summarise(nui = sum(nui),
+            nipr = sum(nipr)) %>%
+  mutate(pctui = 100*(nui/nipr)) %>%
+  ggplot() +
+  geom_bar(mapping = aes(x = agecat_labels, y = pctui, fill = uazcc_catchment), color = "white", position = "dodge", stat = "identity") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Arizona Counties Grouped by Age Group",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes",
+    x = "Income Group",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program",
+    fill = "UAZCC Catchment"
+  ) +
+  scale_fill_manual(values = uazcc_primary_palette) +
+  theme_uazcc_brand
+
+ggsave(
+  filename = "data_viz/uninsured_by_county_age_catch.svg",
   scale = 1.5
 )
 
@@ -179,6 +220,35 @@ ggsave(
   scale = 1.5
 )
 
+# comparing insurance rates grouped by sex and catchment
+sahie_2019_az %>%
+  group_by(uazcc_catchment, sexcat_labels) %>%
+  filter(geocat == "50",
+         agecat == "0",
+         racecat == "0",
+         iprcat == "0") %>%
+  summarise(nui = sum(nui),
+            nipr = sum(nipr)) %>%
+  mutate(pctui = 100*(nui/nipr)) %>%
+  ggplot() +
+  geom_bar(mapping = aes(x = sexcat_labels, y = pctui, fill = uazcc_catchment), position = "dodge", stat = "identity") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Arizona Counties Grouped by Sex",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes",
+    x = "Income Group",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program",
+    fill = "UAZCC Catchment"
+  ) +
+  scale_fill_manual(values = uazcc_primary_palette) +
+  theme_uazcc_brand
+
+ggsave(
+  filename = "data_viz/uninsured_by_county_sex_catch.svg",
+  scale = 1.5
+)
+
 # viz 4 by income ####
 # percent uninsured for all income groups in each county
 # grouped by income category
@@ -209,6 +279,35 @@ ggsave(
   scale = 1.5
 )
 
+# comparing insurance rates grouped by income and catchment
+sahie_2019_az %>%
+  group_by(uazcc_catchment, iprcat_labels) %>%
+  filter(geocat == "50",
+         agecat == "0",
+         racecat == "0",
+         sexcat == "0") %>%
+  summarise(nui = sum(nui),
+            nipr = sum(nipr)) %>%
+  mutate(pctui = 100*(nui/nipr)) %>%
+  ggplot() +
+  geom_bar(mapping = aes(x = iprcat_labels, y = pctui, fill = uazcc_catchment), position = "dodge", stat = "identity") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Arizona Counties Grouped by Income Category",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes",
+    x = "Income Group",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program",
+    fill = "UAZCC Catchment"
+  ) +
+  scale_fill_manual(values = uazcc_primary_palette) +
+  theme_uazcc_brand
+
+ggsave(
+  filename = "data_viz/uninsured_by_county_income_catch.svg",
+  scale = 1.5
+)
+
 # viz 5 by catchment ####
 # percent uninsured for all income groups in each county
 # grouped by catchment
@@ -229,7 +328,6 @@ sahie_2019_az %>%
   ggplot(mapping = aes(x = reorder(uazcc_catchment, pct_ui), y = pct_ui)) +
   geom_bar(fill = "#1E5288", stat = "identity", position = "dodge") +
   coord_flip() +
-  ylim(c(0, 100)) +
   labs(
     title = "Percent Uninsured in Arizona Counties",
     subtitle = "2019, Under 65 years, All Races, Both Sexes, Aggregate values",
