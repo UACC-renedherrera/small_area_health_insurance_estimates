@@ -194,40 +194,40 @@ sahie <- bind_rows(sahie_2015, sahie_2016, sahie_2017, sahie_2018, sahie_2019)
 glimpse(sahie)
 str(sahie)
 
-# exploration ####
-make_chart_of_variable_frequencies <- function(x, the_variable) {
-  the_plot <- x %>%
-    count({{ the_variable }}) %>%
-    ggplot(mapping = aes(x = {{ the_variable }}, y = n)) +
-    geom_bar(stat = "identity")
-  the_plot
-}
-
-# State
-# statefips
-# Unique FIPS code for each state
-make_chart_of_variable_frequencies(sahie_2019, statefips)
-
-# County
-# countyfips
-# Unique FIPS code for each county within a state
-make_chart_of_variable_frequencies(sahie_2019, countyfips)
-
-# geocat
-# Geography category:
-# 40 –State geographic identifier
-# 50 –County geographic identifier
-make_chart_of_variable_frequencies(sahie_2019, geocat)
-
-# agecat
-# Age category
-# 0 –Under 65 years
-# 1 –18 to 64 years
-# 2 –40 to 64 years
-# 3 –50 to 64 years
-# 4 –Under 19 years
-# 5 –21 to 64 years
-make_chart_of_variable_frequencies(sahie_2019, agecat)
+# # exploration ####
+# make_chart_of_variable_frequencies <- function(x, the_variable) {
+#   the_plot <- x %>%
+#     count({{ the_variable }}) %>%
+#     ggplot(mapping = aes(x = {{ the_variable }}, y = n)) +
+#     geom_bar(stat = "identity")
+#   the_plot
+# }
+# 
+# # State
+# # statefips
+# # Unique FIPS code for each state
+# make_chart_of_variable_frequencies(sahie_2019, statefips)
+# 
+# # County
+# # countyfips
+# # Unique FIPS code for each county within a state
+# make_chart_of_variable_frequencies(sahie_2019, countyfips)
+# 
+# # geocat
+# # Geography category:
+# # 40 –State geographic identifier
+# # 50 –County geographic identifier
+# make_chart_of_variable_frequencies(sahie_2019, geocat)
+# 
+# # agecat
+# # Age category
+# # 0 –Under 65 years
+# # 1 –18 to 64 years
+# # 2 –40 to 64 years
+# # 3 –50 to 64 years
+# # 4 –Under 19 years
+# # 5 –21 to 64 years
+# make_chart_of_variable_frequencies(sahie_2019, agecat)
 
 # change the value of the levels
 sahie$agecat_labels <- fct_recode(sahie$agecat,
@@ -239,14 +239,14 @@ sahie$agecat_labels <- fct_recode(sahie$agecat,
   "21 to 64 years" = "5"
 )
 
-# racecat
-# Race category
-# 0 –All races
-# Only state estimates have racecat=1,2,3 values
-# 1 –White alone, not Hispanic
-# 2 –Black alone, not Hispanic
-# 3 –Hispanic (any race)
-make_chart_of_variable_frequencies(sahie_2019, racecat)
+# # racecat
+# # Race category
+# # 0 –All races
+# # Only state estimates have racecat=1,2,3 values
+# # 1 –White alone, not Hispanic
+# # 2 –Black alone, not Hispanic
+# # 3 –Hispanic (any race)
+# make_chart_of_variable_frequencies(sahie_2019, racecat)
 
 # change the value of the levels
 sahie$racecat_labels <- fct_recode(sahie$racecat,
@@ -256,12 +256,12 @@ sahie$racecat_labels <- fct_recode(sahie$racecat,
   "Hispanic (any race)" = "3"
 )
 
-# sexcat
-# Sex category
-# 0 –Both sexes
-# 1 -Male
-# 2-Female
-make_chart_of_variable_frequencies(sahie_2019, sexcat)
+# # sexcat
+# # Sex category
+# # 0 –Both sexes
+# # 1 -Male
+# # 2-Female
+# make_chart_of_variable_frequencies(sahie_2019, sexcat)
 
 # change the value of the levels
 sahie$sexcat_labels <- fct_recode(sahie$sexcat,
@@ -270,15 +270,15 @@ sahie$sexcat_labels <- fct_recode(sahie$sexcat,
   "Female" = "2"
 )
 
-# iprcat
-# Income category
-# 0 –All income levels
-# 1 –At or below 200% of poverty
-# 2 –At or below 250% of poverty
-# 3 –At or below 138% of poverty
-# 4 –At or below 400% of poverty
-# 5 –Between 138% -400% of poverty
-make_chart_of_variable_frequencies(sahie_2019, iprcat)
+# # iprcat
+# # Income category
+# # 0 –All income levels
+# # 1 –At or below 200% of poverty
+# # 2 –At or below 250% of poverty
+# # 3 –At or below 138% of poverty
+# # 4 –At or below 400% of poverty
+# # 5 –Between 138% -400% of poverty
+# make_chart_of_variable_frequencies(sahie_2019, iprcat)
 
 # change the value of the levels
 sahie$iprcat_labels <- fct_recode(sahie$iprcat,
@@ -289,51 +289,52 @@ sahie$iprcat_labels <- fct_recode(sahie$iprcat,
   "At or below 400% of poverty" = "4",
   "Between 138% -400% of poverty" = "5"
 )
-# NIPR
-# Number in demographic group for <income category>
-ggplot(sahie_2019) +
-  geom_histogram(mapping = aes(x = log(nipr)))
 
-# NUI
-# Number uninsured
-ggplot(sahie_2019) +
-  geom_histogram(mapping = aes(x = log(nui)))
+# # NIPR
+# # Number in demographic group for <income category>
+# ggplot(sahie_2019) +
+#   geom_histogram(mapping = aes(x = log(nipr)))
+# 
+# # NUI
+# # Number uninsured
+# ggplot(sahie_2019) +
+#   geom_histogram(mapping = aes(x = log(nui)))
+# 
+# # NIC
+# # Number insured
+# ggplot(sahie_2019) +
+#   geom_histogram(mapping = aes(x = log(nic)))
+# 
+# # PCTUI
+# # Percent uninsured in demographic group for <income category>
+# ggplot(sahie_2019) +
+#   geom_histogram(mapping = aes(x = (pctui)))
+# 
+# # PCTIC
+# # Percent insured in demographic group for <income category>
+# ggplot(sahie_2019) +
+#   geom_histogram(mapping = aes(x = (pctic)))
+# 
+# # PCTELIG
+# # Percent uninsured in demographic group for all income levels
+# ggplot(sahie_2019) +
+#   geom_histogram(mapping = aes(x = (pctelig)))
+# 
+# # PCTLIIC
+# # PPercent insured in demographic group for all income levels
+# ggplot(sahie_2019) +
+#   geom_histogram(mapping = aes(x = (pctliic)))
+# 
+# # state_name
+# # State name
+# make_chart_of_variable_frequencies(sahie_2019, state_name) +
+#   coord_flip()
 
-# NIC
-# Number insured
-ggplot(sahie_2019) +
-  geom_histogram(mapping = aes(x = log(nic)))
-
-# PCTUI
-# Percent uninsured in demographic group for <income category>
-ggplot(sahie_2019) +
-  geom_histogram(mapping = aes(x = (pctui)))
-
-# PCTIC
-# Percent insured in demographic group for <income category>
-ggplot(sahie_2019) +
-  geom_histogram(mapping = aes(x = (pctic)))
-
-# PCTELIG
-# Percent uninsured in demographic group for all income levels
-ggplot(sahie_2019) +
-  geom_histogram(mapping = aes(x = (pctelig)))
-
-# PCTLIIC
-# PPercent insured in demographic group for all income levels
-ggplot(sahie_2019) +
-  geom_histogram(mapping = aes(x = (pctliic)))
-
-# state_name
-# State name
-make_chart_of_variable_frequencies(sahie_2019, state_name) +
-  coord_flip()
-
-# county_name
-# County name
-sahie_2019 %>%
-  count(county_name, sort = TRUE) %>%
-  top_n(10)
+# # county_name
+# # County name
+# sahie_2019 %>%
+#   count(county_name, sort = TRUE) %>%
+#   top_n(10)
 
 # remove " County" from the county names for plotting
 sahie <- sahie %>%
