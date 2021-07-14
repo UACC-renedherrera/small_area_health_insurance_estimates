@@ -13,7 +13,7 @@ library(curl)
 library(tidyverse)
 library(janitor)
 
-# download dataset
+# download dataset sahie 2019 ####
 # set values
 # url <- "https://www2.census.gov/programs-surveys/sahie/datasets/time-series/estimates-acs/sahie-2019-csv.zip"
 # path_zip <- "data/raw"
@@ -48,6 +48,42 @@ sahie_2019 <- read_csv(
 # inspect
 glimpse(sahie_2019)
 str(sahie_2019)
+
+# download dataset sahie 2018 ####
+# set values
+url <- "https://www2.census.gov/programs-surveys/sahie/datasets/time-series/estimates-acs/sahie-2018-csv.zip"
+path_zip <- "data/raw"
+path_unzip <- "data/raw/sahie_2018"
+zip_file <- "sahie_2018.zip"
+
+# # use curl to download
+curl_download(url,
+              destfile = paste(path_zip, zip_file, sep = "/"))
+
+# set value
+zipped_file <- "data/raw/sahie_2018.zip"
+
+# unzip to folder
+unzip(zipped_file, exdir = path_unzip)
+
+# read directly
+sahie_2018 <- read_csv(
+  file = "data/raw/sahie_2018/sahie_2018.csv",
+  col_types = cols(
+    geocat = col_factor(levels = c("40", "50"), ordered = TRUE),
+    agecat = col_factor(levels = c("0", "1", "2", "3", "4", "5"), ordered = TRUE),
+    racecat = col_factor(levels = c("0", "1", "2", "3"), ordered = TRUE),
+    sexcat = col_factor(levels = c("0", "1", "2"), ordered = TRUE),
+    iprcat = col_factor(levels = c("0", "1", "2", "3", "4", "5"), ordered = TRUE)
+  ),
+  skip = 79
+) %>%
+  clean_names() %>%
+  select(!(x26))
+
+# inspect
+glimpse(sahie_2018)
+str(sahie_2018)
 
 # exploration ####
 make_chart_of_variable_frequencies <- function(x, the_variable) {
