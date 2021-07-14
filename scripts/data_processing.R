@@ -40,6 +40,113 @@ sahie_az %>%
   group_by(year) %>%
   select(pctui)
 
+# exploration ####
+make_chart_of_variable_frequencies <- function(x, the_variable) {
+  the_plot <- x %>%
+    count({{ the_variable }}) %>%
+    ggplot(mapping = aes(x = {{ the_variable }}, y = n)) +
+    geom_bar(stat = "identity")
+  the_plot
+}
+
+# State
+# statefips
+# Unique FIPS code for each state
+make_chart_of_variable_frequencies(sahie_az, statefips)
+
+# County
+# countyfips
+# Unique FIPS code for each county within a state
+make_chart_of_variable_frequencies(sahie_az, countyfips)
+
+# geocat
+# Geography category:
+# 40 –State geographic identifier
+# 50 –County geographic identifier
+make_chart_of_variable_frequencies(sahie_az, geocat)
+
+# agecat
+# Age category
+# 0 –Under 65 years
+# 1 –18 to 64 years
+# 2 –40 to 64 years
+# 3 –50 to 64 years
+# 4 –Under 19 years
+# 5 –21 to 64 years
+make_chart_of_variable_frequencies(sahie_az, agecat)
+
+# racecat
+# Race category
+# 0 –All races
+# Only state estimates have racecat=1,2,3 values
+# 1 –White alone, not Hispanic
+# 2 –Black alone, not Hispanic
+# 3 –Hispanic (any race)
+make_chart_of_variable_frequencies(sahie_az, racecat)
+
+# sexcat
+# Sex category
+# 0 –Both sexes
+# 1 -Male
+# 2-Female
+make_chart_of_variable_frequencies(sahie_az, sexcat)
+
+# iprcat
+# Income category
+# 0 –All income levels
+# 1 –At or below 200% of poverty
+# 2 –At or below 250% of poverty
+# 3 –At or below 138% of poverty
+# 4 –At or below 400% of poverty
+# 5 –Between 138% -400% of poverty
+make_chart_of_variable_frequencies(sahie_az, iprcat)
+
+# NIPR
+# Number in demographic group for <income category>
+ggplot(sahie_az) +
+  geom_histogram(mapping = aes(x = log(nipr)))
+
+# NUI
+# Number uninsured
+ggplot(sahie_az) +
+  geom_histogram(mapping = aes(x = log(nui)))
+
+# NIC
+# Number insured
+ggplot(sahie_az) +
+  geom_histogram(mapping = aes(x = log(nic)))
+
+# PCTUI
+# Percent uninsured in demographic group for <income category>
+ggplot(sahie_az) +
+  geom_histogram(mapping = aes(x = (pctui)))
+
+# PCTIC
+# Percent insured in demographic group for <income category>
+ggplot(sahie_az) +
+  geom_histogram(mapping = aes(x = (pctic)))
+
+# PCTELIG
+# Percent uninsured in demographic group for all income levels
+ggplot(sahie_az) +
+  geom_histogram(mapping = aes(x = (pctelig)))
+
+# PCTLIIC
+# PPercent insured in demographic group for all income levels
+ggplot(sahie_az) +
+  geom_histogram(mapping = aes(x = (pctliic)))
+
+# state_name
+# State name
+make_chart_of_variable_frequencies(sahie_az, state_name) +
+  coord_flip()
+
+# county_name
+# County name
+sahie_az %>%
+  count(county_name, sort = TRUE) %>%
+  top_n(10)
+
 # in the most recent year, 2019
 # az: age ####
 # grouped by agecat
