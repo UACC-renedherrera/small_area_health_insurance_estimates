@@ -4,7 +4,7 @@
 
 # Start Here
 
-The [data_tidy.R](scripts\data_tidy.R) script will:
+The [data_tidy.R](scripts/data_tidy.R) script will:
 
 1. download SAHIE datasets for years 2015-2019
 2. unzip them to folders
@@ -14,4 +14,4 @@ The [data_tidy.R](scripts\data_tidy.R) script will:
 6. save the large dataset to disk as an 323.9MB RDS file
 7. save the AZ dataset to disk as an 2MB RDS file
 
-Now you're ready to explore the data in the [data_processing.R](scripts\data_processing.R) and [data_viz.R](scripts\data_viz.R)
+Now you're ready to explore the data in the [data_processing.R](scripts/data_processing.R) and [data_viz.R](scripts/data_viz.R)
