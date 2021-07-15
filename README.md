@@ -16,6 +16,8 @@ The [data_tidy.R](scripts/data_tidy.R) script will:
 
 Now you're ready to explore the data in the [data_processing.R](scripts/data_processing.R) and [data_viz.R](scripts/data_viz.R).
 
+See the dashboard produced with this data: https://rpubs.com/UAZCC_Rene/sahie_az 
+
 # Narrative
 
 In this project I tidy, explore, and process the 2019 data released by the Small Area Health Insurance Estimates (SAHIE) program. Ultimately, I'm trying to identify which, if any, inequities or disparities exist among Arizona populations; it's a question about explaining access to health care. This data set provides summary (model-based estimates of health insurance coverage for counties and states) information for the following variables:
