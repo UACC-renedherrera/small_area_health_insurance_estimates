@@ -180,3 +180,603 @@ sahie_az %>%
 UAZCC
 ========================================
 
+Row
+-------------------------------------
+    
+### Over time
+    
+```{r}
+sahie_az %>%
+  filter(countyfips != "000",
+         agecat == "0",
+         racecat == "0",
+         sexcat == "0",
+         iprcat == "0"
+  ) %>%
+  group_by(uazcc_catchment, year) %>%
+  summarise(
+    nui = sum(nui),
+    nipr = sum(nipr)
+  ) %>%
+  mutate(pct_ui = (nui / nipr) * 100) %>%
+  ggplot() +
+  geom_line(mapping = aes(x = year, y = pct_ui, color = uazcc_catchment), size = 2) +
+  ylim(c(0,15)) +
+  labs(
+    title = "Percent Uninsured in Arizona Counties",
+    subtitle = "Under 65 years, All Races, Both Sexes, Aggregate values",
+    x = "Year",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program",
+    color = "UAZCC Catchment"
+  ) +
+  scale_color_manual(values = uazcc_primary_palette) +
+  theme_uazcc_brand
+```
+ 
+### By income group 
+    
+```{r}
+sahie_az_uazcc %>%
+  filter(year == "2019",
+         sexcat == "0",
+         agecat == "0") %>%
+  group_by(county_name) %>%
+  ggplot(mapping = aes(x = reorder(county_name, pctelig), y = pctelig)) +
+  geom_bar(fill = "#1E5288", stat = "identity", position = "dodge") +
+  facet_wrap(~iprcat_labels) +
+  geom_errorbar(aes(ymin = (pctelig - pctelig_moe), ymax = (pctelig + pctelig_moe)), color = "#001C48") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Arizona UAZCC Catchment Counties by Income Category",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes",
+    x = "County",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program"
+  ) +
+  theme_uazcc_brand
+``` 
+
+Row
+-------------------------------------
+    
+### By age
+    
+```{r}
+sahie_az_uazcc %>%
+  filter(year == "2019",
+         sexcat == "0",
+         iprcat == "0") %>%
+  group_by(county_name) %>%
+  ggplot(mapping = aes(x = reorder(county_name, pctelig), y = pctelig)) +
+  geom_bar(fill = "#1E5288", stat = "identity", position = "dodge") +
+  facet_wrap(~agecat_labels) +
+  geom_errorbar(aes(ymin = (pctelig - pctelig_moe), ymax = (pctelig + pctelig_moe)), color = "#001C48") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Arizona UAZCC Catchment Counties by Age Group",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes, All income levels",
+    x = "County",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program"
+  ) +
+  theme_uazcc_brand
+```
+    
+### By age and sex
+
+```{r}
+sahie_az_uazcc %>%
+  filter(year == "2019",
+         iprcat == "0") %>%
+  group_by(county_name) %>%
+  ggplot(mapping = aes(x = reorder(county_name, pctelig), y = pctelig, fill = sexcat_labels)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  facet_wrap(~agecat_labels) +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Arizona UAZCC Catchment Counties by Age Group",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes, All income levels",
+    x = "County",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program",
+    fill = "Sex"
+  ) +
+  theme_uazcc_brand +
+  scale_fill_brewer(palette = "Set1")
+```
+
+Cochise
+========================================
+
+Row
+-------------------------------------
+    
+### Over time
+    
+```{r}
+sahie_az %>%
+  filter(countyfips == "003",
+         agecat == "0",
+         racecat == "0",
+         sexcat == "0",
+         iprcat == "0"
+  ) %>%
+  ggplot() +
+  geom_line(mapping = aes(x = year, y = pctui), color = "#AB0520", size = 2) +
+  ylim(c(0,15)) +
+  labs(
+    title = "Percent Uninsured in Cochise County ",
+    subtitle = "Under 65 years, All Races, Both Sexes",
+    x = "Year",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program",
+    color = "UAZCC Catchment"
+  ) +
+  theme_uazcc_brand
+```
+ 
+### By income group 
+    
+```{r}
+sahie_az_uazcc %>%
+  filter(countyfips == "003",
+         year == "2019",
+         sexcat == "0",
+         agecat == "0") %>%
+  ggplot(mapping = aes(x = reorder(iprcat_labels, pctelig), y = pctelig)) +
+  geom_bar(fill = "#1E5288", stat = "identity", position = "dodge") +
+  geom_errorbar(aes(ymin = (pctelig - pctelig_moe), ymax = (pctelig + pctelig_moe)), color = "#001C48") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Cochise County by Income Category",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes",
+    x = "Income Category",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program"
+  ) +
+  theme_uazcc_brand
+``` 
+
+Row
+-------------------------------------
+    
+### By age
+    
+```{r}
+sahie_az_uazcc %>%
+  filter(countyfips == "003",
+         year == "2019",
+         sexcat == "0",
+         iprcat == "0") %>%
+  ggplot(mapping = aes(x = reorder(agecat_labels, pctelig), y = pctelig)) +
+  geom_bar(fill = "#1E5288", stat = "identity", position = "dodge") +
+  geom_errorbar(aes(ymin = (pctelig - pctelig_moe), ymax = (pctelig + pctelig_moe)), color = "#001C48") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Cochise County by Age Group",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes, All income levels",
+    x = "Age Group",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program"
+  ) +
+  theme_uazcc_brand
+```
+    
+### By age and sex
+
+```{r}
+sahie_az_uazcc %>%
+  filter(countyfips == "003",
+         year == "2019",
+         iprcat == "0") %>%
+  ggplot(mapping = aes(x = reorder(agecat_labels, pctelig), y = pctelig, fill = sexcat_labels)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Cochise County by Age Group",
+    subtitle = "2019, Under 65 years, All Races, All income levels",
+    x = "County",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program",
+    fill = "Sex"
+  ) +
+  theme_uazcc_brand +
+  scale_fill_brewer(palette = "Set1")
+```
+
+Pima
+========================================
+
+Row
+-------------------------------------
+    
+### Over time
+    
+```{r}
+sahie_az %>%
+  filter(countyfips == "019",
+         agecat == "0",
+         racecat == "0",
+         sexcat == "0",
+         iprcat == "0"
+  ) %>%
+  ggplot() +
+  geom_line(mapping = aes(x = year, y = pctui), color = "#AB0520", size = 2) +
+  ylim(c(0,15)) +
+  labs(
+    title = "Percent Uninsured in Pima County ",
+    subtitle = "Under 65 years, All Races, Both Sexes",
+    x = "Year",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program",
+    color = "UAZCC Catchment"
+  ) +
+  theme_uazcc_brand
+```
+ 
+### By income group 
+    
+```{r}
+sahie_az_uazcc %>%
+  filter(countyfips == "019",
+         year == "2019",
+         sexcat == "0",
+         agecat == "0") %>%
+  ggplot(mapping = aes(x = reorder(iprcat_labels, pctelig), y = pctelig)) +
+  geom_bar(fill = "#1E5288", stat = "identity", position = "dodge") +
+  geom_errorbar(aes(ymin = (pctelig - pctelig_moe), ymax = (pctelig + pctelig_moe)), color = "#001C48") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Pima County by Income Category",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes",
+    x = "Income Category",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program"
+  ) +
+  theme_uazcc_brand
+``` 
+
+Row
+-------------------------------------
+    
+### By age
+    
+```{r}
+sahie_az_uazcc %>%
+  filter(countyfips == "019",
+         year == "2019",
+         sexcat == "0",
+         iprcat == "0") %>%
+  ggplot(mapping = aes(x = reorder(agecat_labels, pctelig), y = pctelig)) +
+  geom_bar(fill = "#1E5288", stat = "identity", position = "dodge") +
+  geom_errorbar(aes(ymin = (pctelig - pctelig_moe), ymax = (pctelig + pctelig_moe)), color = "#001C48") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Pima County by Age Group",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes, All income levels",
+    x = "Age Group",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program"
+  ) +
+  theme_uazcc_brand
+```
+    
+### By age and sex
+
+```{r}
+sahie_az_uazcc %>%
+  filter(countyfips == "019",
+         year == "2019",
+         iprcat == "0") %>%
+  ggplot(mapping = aes(x = reorder(agecat_labels, pctelig), y = pctelig, fill = sexcat_labels)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Pima County by Age Group",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes, All income levels",
+    x = "County",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program",
+    fill = "Sex"
+  ) +
+  theme_uazcc_brand +
+  scale_fill_brewer(palette = "Set1")
+```
+
+Pinal
+========================================
+
+Row
+-------------------------------------
+    
+### Over time
+    
+```{r}
+sahie_az %>%
+  filter(countyfips == "021",
+         agecat == "0",
+         racecat == "0",
+         sexcat == "0",
+         iprcat == "0"
+  ) %>%
+  ggplot() +
+  geom_line(mapping = aes(x = year, y = pctui), color = "#AB0520", size = 2) +
+  ylim(c(0,15)) +
+  labs(
+    title = "Percent Uninsured in Pinal County ",
+    subtitle = "Under 65 years, All Races, Both Sexes",
+    x = "Year",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program",
+    color = "UAZCC Catchment"
+  ) +
+  theme_uazcc_brand
+```
+ 
+### By income group 
+    
+```{r}
+sahie_az_uazcc %>%
+  filter(countyfips == "021",
+         year == "2019",
+         sexcat == "0",
+         agecat == "0") %>%
+  ggplot(mapping = aes(x = reorder(iprcat_labels, pctelig), y = pctelig)) +
+  geom_bar(fill = "#1E5288", stat = "identity", position = "dodge") +
+  geom_errorbar(aes(ymin = (pctelig - pctelig_moe), ymax = (pctelig + pctelig_moe)), color = "#001C48") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Pinal County by Income Category",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes",
+    x = "Income Category",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program"
+  ) +
+  theme_uazcc_brand
+``` 
+
+Row
+-------------------------------------
+    
+### By age
+    
+```{r}
+sahie_az_uazcc %>%
+  filter(countyfips == "021",
+         year == "2019",
+         sexcat == "0",
+         iprcat == "0") %>%
+  ggplot(mapping = aes(x = reorder(agecat_labels, pctelig), y = pctelig)) +
+  geom_bar(fill = "#1E5288", stat = "identity", position = "dodge") +
+  geom_errorbar(aes(ymin = (pctelig - pctelig_moe), ymax = (pctelig + pctelig_moe)), color = "#001C48") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Pinal County by Age Group",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes, All income levels",
+    x = "Age Group",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program"
+  ) +
+  theme_uazcc_brand
+```
+    
+### By age and sex
+
+```{r}
+sahie_az_uazcc %>%
+  filter(countyfips == "021",
+         year == "2019",
+         iprcat == "0") %>%
+  ggplot(mapping = aes(x = reorder(agecat_labels, pctelig), y = pctelig, fill = sexcat_labels)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Pinal County by Age Group",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes, All income levels",
+    x = "County",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program",
+    fill = "Sex"
+  ) +
+  theme_uazcc_brand +
+  scale_fill_brewer(palette = "Set1")
+```
+
+Santa Cruz
+========================================
+
+Row
+-------------------------------------
+    
+### Over time
+    
+```{r}
+sahie_az %>%
+  filter(countyfips == "023",
+         agecat == "0",
+         racecat == "0",
+         sexcat == "0",
+         iprcat == "0"
+  ) %>%
+  ggplot() +
+  geom_line(mapping = aes(x = year, y = pctui), color = "#AB0520", size = 2) +
+  ylim(c(0,15)) +
+  labs(
+    title = "Percent Uninsured in Santa Cruz County ",
+    subtitle = "Under 65 years, All Races, Both Sexes",
+    x = "Year",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program",
+    color = "UAZCC Catchment"
+  ) +
+  theme_uazcc_brand
+```
+ 
+### By income group 
+    
+```{r}
+sahie_az_uazcc %>%
+  filter(countyfips == "023",
+         year == "2019",
+         sexcat == "0",
+         agecat == "0") %>%
+  ggplot(mapping = aes(x = reorder(iprcat_labels, pctelig), y = pctelig)) +
+  geom_bar(fill = "#1E5288", stat = "identity", position = "dodge") +
+  geom_errorbar(aes(ymin = (pctelig - pctelig_moe), ymax = (pctelig + pctelig_moe)), color = "#001C48") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Santa Cruz County by Income Category",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes",
+    x = "Income Category",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program"
+  ) +
+  theme_uazcc_brand
+``` 
+
+Row
+-------------------------------------
+    
+### By age
+    
+```{r}
+sahie_az_uazcc %>%
+  filter(countyfips == "023",
+         year == "2019",
+         sexcat == "0",
+         iprcat == "0") %>%
+  ggplot(mapping = aes(x = reorder(agecat_labels, pctelig), y = pctelig)) +
+  geom_bar(fill = "#1E5288", stat = "identity", position = "dodge") +
+  geom_errorbar(aes(ymin = (pctelig - pctelig_moe), ymax = (pctelig + pctelig_moe)), color = "#001C48") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Santa Cruz County by Age Group",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes, All income levels",
+    x = "Age Group",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program"
+  ) +
+  theme_uazcc_brand
+```
+    
+### By age and sex
+
+```{r}
+sahie_az_uazcc %>%
+  filter(countyfips == "023",
+         year == "2019",
+         iprcat == "0") %>%
+  ggplot(mapping = aes(x = reorder(agecat_labels, pctelig), y = pctelig, fill = sexcat_labels)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Santa Cruz County by Age Group",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes, All income levels",
+    x = "County",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program",
+    fill = "Sex"
+  ) +
+  theme_uazcc_brand +
+  scale_fill_brewer(palette = "Set1")
+```
+
+Yuma
+========================================
+
+Row
+-------------------------------------
+    
+### Over time
+    
+```{r}
+sahie_az %>%
+  filter(countyfips == "027",
+         agecat == "0",
+         racecat == "0",
+         sexcat == "0",
+         iprcat == "0"
+  ) %>%
+  ggplot() +
+  geom_line(mapping = aes(x = year, y = pctui), color = "#AB0520", size = 2) +
+  ylim(c(0,15)) +
+  labs(
+    title = "Percent Uninsured in Yuma County ",
+    subtitle = "Under 65 years, All Races, Both Sexes",
+    x = "Year",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program",
+    color = "UAZCC Catchment"
+  ) +
+  theme_uazcc_brand
+```
+ 
+### By income group 
+    
+```{r}
+sahie_az_uazcc %>%
+  filter(countyfips == "027",
+         year == "2019",
+         sexcat == "0",
+         agecat == "0") %>%
+  ggplot(mapping = aes(x = reorder(iprcat_labels, pctelig), y = pctelig)) +
+  geom_bar(fill = "#1E5288", stat = "identity", position = "dodge") +
+  geom_errorbar(aes(ymin = (pctelig - pctelig_moe), ymax = (pctelig + pctelig_moe)), color = "#001C48") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Yuma County by Income Category",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes",
+    x = "Income Category",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program"
+  ) +
+  theme_uazcc_brand
+``` 
+
+Row
+-------------------------------------
+    
+### By age
+    
+```{r}
+sahie_az_uazcc %>%
+  filter(countyfips == "027",
+         year == "2019",
+         sexcat == "0",
+         iprcat == "0") %>%
+  ggplot(mapping = aes(x = reorder(agecat_labels, pctelig), y = pctelig)) +
+  geom_bar(fill = "#1E5288", stat = "identity", position = "dodge") +
+  geom_errorbar(aes(ymin = (pctelig - pctelig_moe), ymax = (pctelig + pctelig_moe)), color = "#001C48") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Yuma County by Age Group",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes, All income levels",
+    x = "Age Group",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program"
+  ) +
+  theme_uazcc_brand
+```
+    
+### By age and sex
+
+```{r}
+sahie_az_uazcc %>%
+  filter(countyfips == "027",
+         year == "2019",
+         iprcat == "0") %>%
+  ggplot(mapping = aes(x = reorder(agecat_labels, pctelig), y = pctelig, fill = sexcat_labels)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Yuma County by Age Group",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes, All income levels",
+    x = "County",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program",
+    fill = "Sex"
+  ) +
+  theme_uazcc_brand +
+  scale_fill_brewer(palette = "Set1")
+```
