@@ -335,55 +335,54 @@ sahie_az %>%
 # percent uninsured for each AZ county ####
 sahie_az %>%
   filter(
+    year == "2019",
     geocat == "50",
     agecat == "0",
     racecat == "0",
     sexcat == "0",
     iprcat == "0"
   ) %>%
-  select(county_name, pctui)
+  select(county_name, pctui) %>%
+  arrange(desc(pctui))
 
 # grouped by age
 sahie_az %>%
   filter(
+    year == "2019",
     geocat == "50",
     racecat == "0",
     sexcat == "0",
     iprcat == "0"
   ) %>%
   group_by(county_name, agecat) %>%
-  select(county_name, agecat_labels, pctui)
-
-# grouped by race redundant because there is no race data reported at the county level
-# sahie_az %>%
-#   filter(geocat == "50",
-#          agecat == "0",
-#          sexcat == "0",
-#          iprcat == "0") %>%
-#   group_by(racecat) %>%
-#   select(county_name, racecat_labels, pctui)
+  select(county_name, agecat_labels, pctui) %>%
+  arrange(desc(pctui))
 
 # grouped by sex
 sahie_az %>%
   filter(
+    year == "2019",
     geocat == "50",
     agecat == "0",
     racecat == "0",
     iprcat == "0"
   ) %>%
   group_by(county_name, sexcat) %>%
-  select(county_name, sexcat_labels, pctui)
+  select(county_name, sexcat_labels, pctui) %>%
+  arrange(desc(pctui))
 
 # grouped by income
 sahie_az %>%
   filter(
+    year == "2019",
     geocat == "50",
     agecat == "0",
     racecat == "0",
     sexcat == "0"
   ) %>%
   group_by(county_name, iprcat) %>%
-  select(county_name, iprcat_labels, pctui)
+  select(county_name, iprcat_labels, pctui) %>%
+  arrange(desc(pctui))
 
 # catchment only
 sahie_az_uazcc <- read_rds("data/tidy/sahie_az.rds") %>%
@@ -402,7 +401,7 @@ sahie_az_uazcc %>%
   ) %>%
   select(county_name, pctui)
 
-# grouped by age
+# grouped by age ####
 sahie_az_uazcc %>%
   filter(
     year == "2019",
@@ -415,7 +414,7 @@ sahie_az_uazcc %>%
   select(county_name, agecat_labels, pctui) %>%
   arrange(desc(pctui))
 
-# grouped by sex
+# grouped by sex ####
 sahie_az_uazcc %>%
   filter(
     year == "2019",
@@ -428,7 +427,7 @@ sahie_az_uazcc %>%
   select(county_name, sexcat_labels, pctui) %>%
   arrange(desc(pctui))
 
-# grouped by income
+# grouped by income ####
 sahie_az_uazcc %>%
   filter(
     year == "2019",
@@ -441,6 +440,7 @@ sahie_az_uazcc %>%
   select(county_name, iprcat_labels, pctui) %>%
   arrange(desc(pctui))
 
+# spatial ####
 # get az county spatial data from tigris
 az_counties <- counties(state = "04") %>%
   janitor::clean_names()
