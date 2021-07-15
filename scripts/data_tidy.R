@@ -13,7 +13,7 @@ library(curl)
 library(tidyverse)
 library(janitor)
 
-# download data from web #### 
+# download data from web ####
 # sahie 2019 ####
 # set values
 url <- "https://www2.census.gov/programs-surveys/sahie/datasets/time-series/estimates-acs/sahie-2019-csv.zip"
@@ -23,8 +23,9 @@ zip_file <- "sahie_2019.zip"
 
 # use curl to download
 curl_download(url,
-              destfile = paste(path_zip, zip_file, sep = "/"),
-              quiet = FALSE)
+  destfile = paste(path_zip, zip_file, sep = "/"),
+  quiet = FALSE
+)
 
 # set value
 zipped_file <- "data/raw/sahie_2019.zip"
@@ -60,8 +61,9 @@ zip_file <- "sahie_2018.zip"
 
 # # use curl to download
 curl_download(url,
-              destfile = paste(path_zip, zip_file, sep = "/"),
-              quiet = FALSE)
+  destfile = paste(path_zip, zip_file, sep = "/"),
+  quiet = FALSE
+)
 
 # set value
 zipped_file <- "data/raw/sahie_2018.zip"
@@ -97,8 +99,9 @@ zip_file <- "sahie_2017.zip"
 
 # # use curl to download
 curl_download(url,
-              destfile = paste(path_zip, zip_file, sep = "/"),
-              quiet = FALSE)
+  destfile = paste(path_zip, zip_file, sep = "/"),
+  quiet = FALSE
+)
 
 # set value
 zipped_file <- "data/raw/sahie_2017.zip"
@@ -130,8 +133,9 @@ zip_file <- "sahie_2016.zip"
 
 # # use curl to download
 curl_download(url,
-              destfile = paste(path_zip, zip_file, sep = "/"),
-              quiet = FALSE)
+  destfile = paste(path_zip, zip_file, sep = "/"),
+  quiet = FALSE
+)
 
 # set value
 zipped_file <- "data/raw/sahie_2016.zip"
@@ -163,8 +167,9 @@ zip_file <- "sahie_2015.zip"
 
 # # use curl to download
 curl_download(url,
-              destfile = paste(path_zip, zip_file, sep = "/"),
-              quiet = FALSE)
+  destfile = paste(path_zip, zip_file, sep = "/"),
+  quiet = FALSE
+)
 
 # set value
 zipped_file <- "data/raw/sahie_2015.zip"
@@ -202,23 +207,23 @@ str(sahie)
 #     geom_bar(stat = "identity")
 #   the_plot
 # }
-# 
+#
 # # State
 # # statefips
 # # Unique FIPS code for each state
 # make_chart_of_variable_frequencies(sahie_2019, statefips)
-# 
+#
 # # County
 # # countyfips
 # # Unique FIPS code for each county within a state
 # make_chart_of_variable_frequencies(sahie_2019, countyfips)
-# 
+#
 # # geocat
 # # Geography category:
 # # 40 –State geographic identifier
 # # 50 –County geographic identifier
 # make_chart_of_variable_frequencies(sahie_2019, geocat)
-# 
+#
 # # agecat
 # # Age category
 # # 0 –Under 65 years
@@ -294,37 +299,37 @@ sahie$iprcat_labels <- fct_recode(sahie$iprcat,
 # # Number in demographic group for <income category>
 # ggplot(sahie_2019) +
 #   geom_histogram(mapping = aes(x = log(nipr)))
-# 
+#
 # # NUI
 # # Number uninsured
 # ggplot(sahie_2019) +
 #   geom_histogram(mapping = aes(x = log(nui)))
-# 
+#
 # # NIC
 # # Number insured
 # ggplot(sahie_2019) +
 #   geom_histogram(mapping = aes(x = log(nic)))
-# 
+#
 # # PCTUI
 # # Percent uninsured in demographic group for <income category>
 # ggplot(sahie_2019) +
 #   geom_histogram(mapping = aes(x = (pctui)))
-# 
+#
 # # PCTIC
 # # Percent insured in demographic group for <income category>
 # ggplot(sahie_2019) +
 #   geom_histogram(mapping = aes(x = (pctic)))
-# 
+#
 # # PCTELIG
 # # Percent uninsured in demographic group for all income levels
 # ggplot(sahie_2019) +
 #   geom_histogram(mapping = aes(x = (pctelig)))
-# 
+#
 # # PCTLIIC
 # # PPercent insured in demographic group for all income levels
 # ggplot(sahie_2019) +
 #   geom_histogram(mapping = aes(x = (pctliic)))
-# 
+#
 # # state_name
 # # State name
 # make_chart_of_variable_frequencies(sahie_2019, state_name) +
