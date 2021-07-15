@@ -201,7 +201,7 @@ sahie_az %>%
   mutate(pct_ui = (nui / nipr) * 100) %>%
   ggplot() +
   geom_line(mapping = aes(x = year, y = pct_ui, color = uazcc_catchment), size = 2) +
-  ylim(c(0,15)) +
+  ylim(c(0,20)) +
   labs(
     title = "Percent Uninsured in Arizona Counties",
     subtitle = "Under 65 years, All Races, Both Sexes, Aggregate values",
@@ -304,7 +304,7 @@ sahie_az %>%
   ) %>%
   ggplot() +
   geom_line(mapping = aes(x = year, y = pctui), color = "#AB0520", size = 2) +
-  ylim(c(0,15)) +
+  ylim(c(0,20)) +
   labs(
     title = "Percent Uninsured in Cochise County ",
     subtitle = "Under 65 years, All Races, Both Sexes",
@@ -403,7 +403,7 @@ sahie_az %>%
   ) %>%
   ggplot() +
   geom_line(mapping = aes(x = year, y = pctui), color = "#AB0520", size = 2) +
-  ylim(c(0,15)) +
+  ylim(c(0,20)) +
   labs(
     title = "Percent Uninsured in Pima County ",
     subtitle = "Under 65 years, All Races, Both Sexes",
@@ -502,7 +502,7 @@ sahie_az %>%
   ) %>%
   ggplot() +
   geom_line(mapping = aes(x = year, y = pctui), color = "#AB0520", size = 2) +
-  ylim(c(0,15)) +
+  ylim(c(0,20)) +
   labs(
     title = "Percent Uninsured in Pinal County ",
     subtitle = "Under 65 years, All Races, Both Sexes",
@@ -601,7 +601,7 @@ sahie_az %>%
   ) %>%
   ggplot() +
   geom_line(mapping = aes(x = year, y = pctui), color = "#AB0520", size = 2) +
-  ylim(c(0,15)) +
+  ylim(c(0,20)) +
   labs(
     title = "Percent Uninsured in Santa Cruz County ",
     subtitle = "Under 65 years, All Races, Both Sexes",
@@ -700,7 +700,7 @@ sahie_az %>%
   ) %>%
   ggplot() +
   geom_line(mapping = aes(x = year, y = pctui), color = "#AB0520", size = 2) +
-  ylim(c(0,15)) +
+  ylim(c(0,20)) +
   labs(
     title = "Percent Uninsured in Yuma County ",
     subtitle = "Under 65 years, All Races, Both Sexes",
