@@ -1,0 +1,182 @@
+---
+title: "Health Insurance Coverage Estimates in Arizona"
+output: flexdashboard::flex_dashboard
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(sf)
+library(ggthemes)
+library(RColorBrewer)
+
+# list of catchment counties
+uazcc_catchment_counties <- c(
+  "Cochise",
+  "Pima",
+  "Pinal",
+  "Santa Cruz",
+  "Yuma"
+)
+
+# Primary Color Palette 2
+# c("UA Red", "Arizona Blue")
+uazcc_primary_palette <- c("#0C234B", "#AB0520")
+
+# read data #### 
+# data frame
+sahie_az <- read_rds("../data/tidy/sahie_az.rds")
+
+# catchment only 
+sahie_az_uazcc <- read_rds("../data/tidy/sahie_az.rds") %>%
+  filter(uazcc_catchment == "yes")
+
+# spatial
+sahie_az_spatial <- read_rds("../data/tidy/sahie_az_spatial.rds")
+
+# catchment only spatial 
+sahie_az_uazcc_spatial <- read_rds("../data/tidy/sahie_az_uazcc_spatial.rds")
+
+# set theme ####
+# set consistent theme for graphics & data visualizations
+theme_uazcc_brand <- theme_clean() +
+  theme(
+    text = element_text(
+      family = "sans",
+      face = "bold",
+      color = "#001C48",
+      size = 12
+    ),
+    panel.background = element_rect(fill = "white"),
+    panel.grid = element_line(color = "#1E5288"),
+    plot.background = element_rect(fill = "#EcE9EB"),
+    aspect.ratio = 2 / 3,
+    legend.background = element_rect(fill = "white"),
+    legend.position = "bottom",
+    plot.caption = element_text(size = 8),
+    plot.subtitle = element_text(size = 12),
+    plot.title = element_text(size = 14),
+    strip.background = element_rect(fill = "#EcE9EB")
+  )
+
+# spatial
+theme_uazcc_brand_spatial <- theme_map() +
+  theme(
+    text = element_text(
+      family = "sans",
+      face = "bold",
+      color = "#001C48",
+      size = 12
+    ),
+    legend.position = "right",
+    plot.caption = element_text(size = 8),
+    plot.subtitle = element_text(size = 12),
+    plot.title = element_text(size = 14),
+    strip.background = element_rect(fill = "#EcE9EB")
+  )
+
+# catchment only in 2019
+sahie_az_uazcc_2019 <- sahie_az_uazcc %>%
+  filter(year == "2019",
+         countyfips != "000",
+         agecat == "0",
+         racecat == "0",
+         sexcat == "0",
+         iprcat == "0"
+  )
+```
+
+Arizona
+========================================
+
+Column {data-width=600}
+----------------------------------------
+
+### Rates of Uninsured Across the State
+
+```{r}
+sahie_az_spatial %>%
+  filter(year == "2019",
+    countyfips != "000",
+    agecat == "0",
+    racecat == "0",
+    sexcat == "0",
+    iprcat == "0"
+  ) %>%
+  ggplot() +
+  geom_sf(mapping = aes(fill = pctelig), color = "white") +
+  geom_sf(data = sahie_az_uazcc_spatial, fill = NA, color = "#AB0520") +
+  scale_color_viridis_c("Percent uninsured") +
+  scale_fill_viridis_c("Percent uninsured") +
+  geom_sf_label(mapping = aes(label = name), size = 1.75) +
+  labs(
+    title = "Percent Uninsured in Arizona Counties",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes, All Incomes",
+    x = "County",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program"
+  ) +
+  theme_uazcc_brand_spatial
+```
+
+
+Column {data-width=500}
+----------------------------------------
+
+### Percent Uninsured in Each Arizona County 
+
+```{r}
+sahie_az %>%
+  filter(
+    year == "2019",
+    countyfips != "000",
+    agecat == "0",
+    racecat == "0",
+    sexcat == "0",
+    iprcat == "0"
+  ) %>%
+  ggplot(mapping = aes(x = reorder(county_name, pctelig), y = pctelig)) +
+  geom_bar(stat = "identity", mapping = aes(fill = pctelig)) +
+  geom_bar(data = sahie_az_uazcc_2019, mapping = aes(x = reorder(county_name, pctelig), y = pctelig), color = "#AB0520", stat = "identity", fill = NA) +
+  geom_errorbar(aes(ymin = (pctelig - pctelig_moe), ymax = (pctelig + pctelig_moe)), color = "#001C48") +
+  scale_fill_viridis_c() +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Arizona Counties",
+    subtitle = "2019, Under 65 years, All Races, Both Sexes, All Incomes",
+    x = "County",
+    y = "Percent Uninsured",
+    fill = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program"
+  ) +
+  theme_uazcc_brand +
+  theme(legend.position = "none")
+```
+
+### Uninsured by Race and Sex in Arizona
+
+```{r}
+sahie_az %>%
+  filter(year == "2019",
+         countyfips == "000",
+         iprcat == "0",
+         agecat == "0"
+  ) %>%
+  ggplot(mapping = aes(x = reorder(racecat_labels, pctelig), y = pctelig)) +
+  geom_bar(fill = "#1E5288", stat = "identity", position = "dodge") +
+  facet_wrap(~sexcat_labels) +
+  geom_errorbar(aes(ymin = (pctelig - pctelig_moe), ymax = (pctelig + pctelig_moe)), color = "#001C48") +
+  coord_flip() +
+  labs(
+    title = "Percent Uninsured in Arizona by Race",
+    subtitle = "2019, Under 65 years, All Incomes, All Counties",
+    x = "Race",
+    y = "Percent Uninsured",
+    caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program"
+  ) +
+  theme_uazcc_brand
+```
+
+UAZCC
+========================================
+
