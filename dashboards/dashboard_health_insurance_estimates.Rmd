@@ -9,6 +9,7 @@ library(tidyverse)
 library(sf)
 library(ggthemes)
 library(RColorBrewer)
+library(plotly)
 
 # list of catchment counties
 uazcc_catchment_counties <- c(
@@ -39,23 +40,23 @@ sahie_az_uazcc_spatial <- read_rds("../data/tidy/sahie_az_uazcc_spatial.rds")
 
 # set theme ####
 # set consistent theme for graphics & data visualizations
-theme_uazcc_brand <- theme_clean() +
+theme_uazcc_brand <- theme_clean(base_size = 12) +
   theme(
     text = element_text(
       family = "sans",
-      face = "bold",
+      # face = "bold",
       color = "#001C48",
-      size = 12
+      # size = rel(1.5)
     ),
     panel.background = element_rect(fill = "white"),
     panel.grid = element_line(color = "#1E5288"),
     plot.background = element_rect(fill = "#EcE9EB"),
-    aspect.ratio = 2 / 3,
+    # aspect.ratio = 3 / 4,
     legend.background = element_rect(fill = "white"),
     legend.position = "bottom",
     plot.caption = element_text(size = 8),
-    plot.subtitle = element_text(size = 12),
-    plot.title = element_text(size = 14),
+    # plot.subtitle = element_text(size = 12),
+    # plot.title = element_text(size = 14),
     strip.background = element_rect(fill = "#EcE9EB")
   )
 
@@ -89,12 +90,12 @@ sahie_az_uazcc_2019 <- sahie_az_uazcc %>%
 Arizona
 ========================================
 
-Column {data-width=600}
+Column { data-width = 600 }
 ----------------------------------------
 
 ### Rates of Uninsured Across the State
 
-```{r}
+```{r, cache=TRUE}
 sahie_az_spatial %>%
   filter(year == "2019",
     countyfips != "000",
@@ -115,18 +116,19 @@ sahie_az_spatial %>%
     x = "County",
     y = "Percent Uninsured",
     caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program"
-  ) +
-  theme_uazcc_brand_spatial
+  ) 
+# +
+  # theme_uazcc_brand_spatial
 ```
 
 
-Column {data-width=500}
+Column { data-width = 400 }
 ----------------------------------------
 
 ### Percent Uninsured in Each Arizona County 
 
-```{r}
-sahie_az %>%
+```{r, cache=TRUE}
+county <- sahie_az %>%
   filter(
     year == "2019",
     countyfips != "000",
@@ -151,12 +153,19 @@ sahie_az %>%
   ) +
   theme_uazcc_brand +
   theme(legend.position = "none")
+
+ggplotly(county)
 ```
 
 ### Uninsured by Race and Sex in Arizona
 
 ```{r}
-sahie_az %>%
+# try instead adding the images ![](image here){ width=20% }
+# to chunk options, out.width = "20%"
+# ? flex dashboard enlarge or zoom image? 
+# 
+
+sex_by_race <- sahie_az %>%
   filter(year == "2019",
          countyfips == "000",
          iprcat == "0",
@@ -175,6 +184,8 @@ sahie_az %>%
     caption = "Source: U.S. Census Bureau, 2019 Small Area Health Insurance Estimates (SAHIE) program"
   ) +
   theme_uazcc_brand
+
+ggplotly(sex_by_race)
 ```
 
 UAZCC
